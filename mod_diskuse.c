@@ -291,29 +291,11 @@ MODRET diskuse_pre_stor(cmd_rec *cmd) {
   return PR_DECLINED(cmd);
 }
 
-/* Event handlers
- */
+static int diskuse_init(void);
 
 #if defined(PR_SHARED_MODULE)
-static void diskuse_mod_unload_ev(const void *event_data, void *user_data) {
-  if (strcmp("mod_diskuse.c", (const char *) event_data) == 0) {
-    pr_event_unregister(&diskuse_module, NULL, NULL);
-  }
-}
+static void diskuse_mod_unload_ev(const void *event_data, void *user_data);
 #endif
-
-/* Module initialization
- */
-
-static int diskuse_init(void) {
-
-#if defined(PR_SHARED_MODULE)
-  pr_event_register(&diskuse_module, "core.module-unload",
-    diskuse_mod_unload_ev, NULL);
-#endif
-
-  return 0;
-}
 
 /* Module API tables
  */
@@ -357,3 +339,27 @@ module diskuse_module = {
   /* Module version */
   MOD_DISKUSE_VERSION
 };
+
+/* Event handlers
+ */
+
+#if defined(PR_SHARED_MODULE)
+static void diskuse_mod_unload_ev(const void *event_data, void *user_data) {
+  if (strcmp("mod_diskuse.c", (const char *) event_data) == 0) {
+    pr_event_unregister(&diskuse_module, NULL, NULL);
+  }
+}
+#endif
+
+/* Module initialization
+ */
+
+static int diskuse_init(void) {
+
+#if defined(PR_SHARED_MODULE)
+  pr_event_register(&diskuse_module, "core.module-unload",
+    diskuse_mod_unload_ev, NULL);
+#endif
+
+  return 0;
+}
