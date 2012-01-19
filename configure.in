@@ -1,0 +1,17 @@
+AC_INIT(./mod_diskuse.c)
+
+dnl Regular configure stuff
+
+AC_PROG_CC
+AC_PROG_CPP
+AC_AIX
+AC_ISC_POSIX
+AC_MINIX
+
+AC_HEADER_STDC
+AC_CHECK_HEADERS(sys/mount.h sys/param.h sys/vfs.h sys/statvfs.h)
+
+AC_CHECK_FUNCS(statfs statvfs)
+
+AC_CONFIG_HEADER(mod_diskuse.h)
+AC_OUTPUT(Makefile)

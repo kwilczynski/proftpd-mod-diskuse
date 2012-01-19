@@ -1,0 +1,120 @@
+<!-- $Id: mod_diskuse.html,v 1.2 2002/05/20 17:49:16 tj Exp tj $ -->
+<!-- $Source: /home/tj/proftpd/modules/doc/RCS/mod_diskuse.html,v $ -->
+
+<html>
+<head>
+<title>ProFTPD module mod_diskuse</title>
+</head>
+
+<body bgcolor=white>
+
+<hr><br>
+<center>
+<h2><b>ProFTPD module <code>mod_diskuse</code></b></h2>
+</center>
+<hr><br>
+
+This module is contained in the <code>mod_diskuse.h</code> and
+<code>mod_diskuse.c</code> files for ProFTPD 1.2, found
+<a href="http://www.castaglia.org/proftpd/">here</a>, and is not compiled by
+default.  Installation instructions are discussed
+<a href="#Installation">here</a>.
+
+<p>
+The <code>mod_diskuse</code> module can be used to prevent users from
+uploading data when the total disk usage of the underlying filesystem has
+reached a configurable limit.
+
+<p>
+The most current version of <code>mod_diskuse</code> can be found at:
+<pre>
+  <a href="http://www.castaglia.org/proftpd/">http://www.castaglia.org/proftpd/</a>
+</pre>
+
+<h2>Author</h2>
+<p>
+Please contact TJ Saunders &lt;tj <i>at</i> castaglia.org&gt; with any
+questions, concerns, or suggestions regarding this module.
+
+<h2>Directives</h2>
+<ul>
+  <li><a href="#MaxDiskUsage">MaxDiskUsage</a>
+</ul>
+
+<hr>
+<h2><a name="MaxDiskUsage">MaxDiskUsage</a></h2>
+<strong>Syntax:</strong> MaxDiskUsage <em>percent|&quot;none&quot; [&quot;user&quot;|&quot;group&quot;|&quot;class&quot; expression]</em><br>
+<strong>Default:</strong> None<br>
+<strong>Context:</strong> server config, <code>&lt;VirtualHost&gt;</code>, <code>&lt;Global&gt;</code>, <code>&lt;Anonymous&gt;</code><br>
+<strong>Module:</strong> mod_diskuse<br>
+<strong>Compatibility:</strong> 1.2.5rc2 and later
+
+<p>
+The <code>MaxDiskUsage</code> directive configures the maximum amount of
+disk space in use, as a percentage, before uploads to the server (<i>i.e.</i>
+<code>APPE</code>s, <code>STOR</code>s, and <code>STOU</code>s) are denied.
+Denial of these commands will be logged.
+
+<p>
+The <em>percent</em> can also be &quot;none&quot;, which is used to override
+any inherited disk use limits, as from a <code>&lt;Global&gt;</code> context.
+
+<p>
+The optional parameters are used to restrict the disk usage limit only to
+specific users.  If &quot;user&quot; restriction is given, then
+<em>expression</em> is a user-expression specifying to which users the limit
+applies.  Similarly for the &quot;group&quot; restriction.  For the
+&quot;class&quot; restriction, the expression is simply the name of connection
+class for whom the rule will apply.
+
+<p>
+Example:
+<pre>
+  # Prevent anonymous users from using up too much space...
+  MaxDiskUsage 60.0 user anonymous
+
+  # ...but allow other users to use up to a more reasonable amount
+  MaxDiskUsage 80.0
+</pre>
+
+<p>
+<hr><br>
+<h2><a name="Installation">Installation</a></h2>
+To install <code>mod_diskuse</code>, follow these instructions.  After unpacking
+the tarball, run the <code>configure</code> script:
+<pre>
+  cd mod_diskuse/
+  ./configure
+</pre>
+This checks your system for necessary information and writes a proper
+<code>mod_diskuse.h</code>. Now, copy the <code>mod_diskuse.c</code> and
+<code>mod_diskuse.h</code> files into:
+<pre>
+  <i>proftpd-dir</i>/contrib/
+</pre>
+after unpacking the latest proftpd-1.2 source code.  Follow the usual steps
+for using third-party modules in proftpd:
+<pre>
+  ./configure --with-modules=mod_diskuse
+  make
+  make install
+</pre>
+
+<p>
+<hr><br>
+
+Author: <i>$Author: tj $</i><br>
+Last Updated: <i>$Date: 2002/05/20 17:49:16 $</i><br>
+
+<br><hr>
+
+<font size=2><b><i>
+&copy; Copyright 2000-2002 TJ Saunders<br>
+ All Rights Reserved<br>
+</i></b></font>
+
+<hr><br>
+
+</body>
+</html>
+

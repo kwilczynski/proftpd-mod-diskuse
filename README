@@ -1,0 +1,89 @@
+  ------------------------------------------------------------------------
+
+                         ProFTPD module mod_diskuse
+
+  ------------------------------------------------------------------------
+
+This module is contained in the mod_diskuse.h and mod_diskuse.c files for
+ProFTPD 1.2, found here, and is not compiled by default. Installation
+instructions are discussed here.
+
+The mod_diskuse module can be used to prevent users from uploading data when
+the total disk usage of the underlying filesystem has reached a configurable
+limit.
+
+The most current version of mod_diskuse can be found at:
+
+  http://www.castaglia.org/proftpd/
+
+Author
+
+Please contact TJ Saunders <tj at castaglia.org> with any questions,
+concerns, or suggestions regarding this module.
+
+Directives
+
+   * MaxDiskUsage
+
+  ------------------------------------------------------------------------
+
+MaxLoad
+
+Syntax: MaxDiskUsage percent|"none" ["user"|"group"|"class" expression]
+Default: None
+Context: server config, <VirtualHost>, <Global>, <Anonymous>
+Module: mod_diskuse
+Compatibility: 1.2.5rc2 and later
+
+The MaxDiskUsage directive configures the maximum amount of disk space in
+use, as a percentage, before uploads to the server (i.e. APPEs, STORs, and
+STOUs) are denied. Denial of these commands will be logged.
+
+The percent can also be "none", which is used to override any inherited disk
+use limits, as from a <Global> context.
+
+The optional parameters are used to restrict the disk usage limit only to
+specific users. If "user" restriction is given, then expression is a
+user-expression specifying to which users the limit applies. Similarly for
+the "group" restriction. For the "class" restriction, the expression is
+simply the name of connection class for whom the rule will apply.
+
+Example:
+
+  # Prevent anonymous users from using up too much space...
+  MaxDiskUsage 60.0 user anonymous
+
+  # ...but allow other users to use up to a more reasonable amount
+  MaxDiskUsage 80.0
+
+  ------------------------------------------------------------------------
+
+Installation
+
+To install mod_diskuse, follow these instructions. After unpacking the
+tarball, run the configure script:
+
+  cd mod_diskuse/
+  ./configure
+
+This checks your system for necessary information and writes a proper
+mod_diskuse.h. Now, copy the mod_diskuse.c and mod_diskuse.h files into:
+
+  proftpd-dir/contrib/
+
+after unpacking the latest proftpd-1.2 source code. Follow the usual steps
+for using third-party modules in proftpd:
+
+  ./configure --with-modules=mod_diskuse
+  make
+  make install
+
+  ------------------------------------------------------------------------
+
+Author: $Author: tj $
+Last Updated: $Date: 2002/03/07 01:11:19 $
+
+  ------------------------------------------------------------------------
+© Copyright 2000-2002 TJ Saunders
+All Rights Reserved
+  ------------------------------------------------------------------------
